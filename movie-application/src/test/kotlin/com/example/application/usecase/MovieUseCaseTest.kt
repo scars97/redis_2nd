@@ -1,5 +1,6 @@
 package com.example.application.usecase
 
+import com.example.application.fixture.MovieUseCaseFixture
 import com.example.business.movie.domain.Movie
 import com.example.business.movie.service.MovieService
 import com.example.business.theater.domain.Theater
@@ -33,47 +34,22 @@ class MovieUseCaseTest {
     @Mock
     private lateinit var scheduleService: TheaterScheduleService
 
-    private lateinit var movie: Movie
-    private lateinit var theater: Theater
-    private lateinit var schedule1: TheaterSchedule
-    private lateinit var schedule2: TheaterSchedule
+    private val fixture: MovieUseCaseFixture = MovieUseCaseFixture()
 
     @BeforeEach
     fun setUp() {
         sut = MovieUseCase(movieService, theaterService, scheduleService)
-
-        movie = Movie(
-            movieId = 1L,
-            title = "영화 A",
-            thumbnail = "url",
-            releaseDate = LocalDate.now().minusDays(1),
-            runTime = 120,
-            genre = "액션",
-            rating = "전체 이용가"
-        )
-        theater = Theater(theaterId = 1L, name = "A관")
-        schedule1 = TheaterSchedule(
-            scheduleId = 1L,
-            movieId = 1L,
-            theaterId = 1L,
-            screeningDate = LocalDate.now(),
-            startTime = LocalTime.of(12, 0),
-            endTime = LocalTime.of(14, 0)
-        )
-        schedule2 = TheaterSchedule(
-            scheduleId = 2L,
-            movieId = 1L,
-            theaterId = 1L,
-            screeningDate = LocalDate.now(),
-            startTime = LocalTime.of(14, 0),
-            endTime = LocalTime.of(16, 0)
-        )
     }
 
     @DisplayName("현재 상영 중인 영화 목록이 반환된다.")
     @Test
     fun getAvailableMovies() {
         // given
+        val movie = fixture.createMovie(1L, "영화 A", LocalDate.now().minusDays(1))
+        val theater = fixture.createTheater(1L, "A관")
+        val schedule1 = fixture.createSchedule(1L, 1L, 1L, LocalTime.of(12,0), LocalTime.of(14, 0))
+        val schedule2 = fixture.createSchedule(2L, 1L, 1L, LocalTime.of(14,0), LocalTime.of(16, 0))
+
         `when`(movieService.getAvailableMovies()).thenReturn(listOf(movie))
         `when`(scheduleService.getSchedules(listOf(movie))).thenReturn(listOf(schedule1, schedule2))
         `when`(theaterService.getTheaters(setOf(schedule1.theaterId, schedule2.theaterId))).thenReturn(listOf(theater))
