@@ -13,7 +13,7 @@ class TheaterScheduleService (
     fun getSchedules(movies: List<Movie>): List<TheaterSchedule> {
         val movieIds: List<Long> = movies.map { it.movieId }
 
-        return scheduleRepository.getScheduleByMovieIds(movieIds)
+        return scheduleRepository.getScheduleBy(movieIds)
     }
 
 }

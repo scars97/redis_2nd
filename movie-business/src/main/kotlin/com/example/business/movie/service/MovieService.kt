@@ -10,6 +10,6 @@ class MovieService(
     private val movieRepository: MovieRepository
 ) {
     fun getAvailableMovies() : List<Movie> {
-        return movieRepository.findMoviesReleasedUntil(LocalDate.now())
+        return movieRepository.getMoviesReleasedUntil(LocalDate.now())
     }
 }
