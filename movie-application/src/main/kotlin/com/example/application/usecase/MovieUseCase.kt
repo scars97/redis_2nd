@@ -1,6 +1,6 @@
 package com.example.application.usecase
 
-import com.example.application.dto.MovieResult
+import com.example.application.dto.AvailableMovieResult
 import com.example.business.movie.domain.Movie
 import com.example.business.movie.service.MovieService
 import com.example.business.theater.domain.Theater
@@ -16,7 +16,7 @@ class MovieUseCase(
     private val scheduleService: TheaterScheduleService
 ){
 
-    fun getAvailableMovies(): List<MovieResult> {
+    fun getAvailableMovies(): List<AvailableMovieResult> {
         // 상영 가능한 영화 목록 조회
         val availableMovies: List<Movie> = movieService.getAvailableMovies()
 
@@ -32,7 +32,7 @@ class MovieUseCase(
         return availableMovies.map { movie ->
             val schedules = scheduleMap[movie.movieId] ?: emptyList()
             val theaters = schedules.mapNotNull { theaterMap[it.theaterId] }.toSet()
-            MovieResult.of(movie, theaters, schedules)
+            AvailableMovieResult.of(movie, theaters, schedules)
         }.toList()
     }
 

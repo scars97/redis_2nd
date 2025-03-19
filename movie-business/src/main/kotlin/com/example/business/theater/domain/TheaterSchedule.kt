@@ -9,8 +9,6 @@ data class TheaterSchedule (
     val movieId: Long,
     val theaterId: Long,
     val screeningDate: LocalDate,
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     val startTime: LocalTime,
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     val endTime: LocalTime
 )
