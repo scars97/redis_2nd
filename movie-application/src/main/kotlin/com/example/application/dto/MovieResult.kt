@@ -1,8 +1,6 @@
 package com.example.application.dto
 
 import com.example.business.movie.domain.Movie
-import com.example.business.theater.domain.Theater
-import com.example.business.theater.domain.TheaterSchedule
 import java.time.LocalDate
 
 data class MovieResult(
@@ -12,12 +10,11 @@ data class MovieResult(
     val thumbnail: String,
     val runTime: Int,
     val genre: String,
-    val rating: String,
-    val theaters: Set<Theater> = setOf(),
-    val theaterSchedules: List<TheaterSchedule> = listOf()
+    val rating: String
 ) {
+
     companion object {
-        fun of(movie: Movie, theaters: Set<Theater>, schedules: List<TheaterSchedule>): MovieResult {
+        fun of(movie: Movie): MovieResult {
             return MovieResult(
                 movieId = movie.movieId,
                 title = movie.title,
@@ -25,10 +22,9 @@ data class MovieResult(
                 thumbnail = movie.thumbnail,
                 runTime = movie.runTime,
                 genre = movie.genre,
-                rating = movie.rating,
-                theaters = theaters,
-                theaterSchedules = schedules
+                rating = movie.rating
             )
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package com.example.infrastructure.`in`
 
+import com.example.application.dto.AvailableMovieResult
 import com.example.application.usecase.MovieUseCase
 import com.example.application.dto.MovieResult
 import org.springframework.http.ResponseEntity
@@ -14,7 +15,7 @@ class MovieController(
 ) {
 
     @GetMapping("")
-    fun getMovies() : ResponseEntity<List<MovieResult>> {
+    fun getMovies() : ResponseEntity<List<AvailableMovieResult>> {
         return ResponseEntity.ok(movieUseCase.getAvailableMovies())
     }
 

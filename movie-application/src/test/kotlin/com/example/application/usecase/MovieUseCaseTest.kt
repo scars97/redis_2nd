@@ -82,9 +82,9 @@ class MovieUseCaseTest {
         val result = sut.getAvailableMovies()
 
         // then
-        assertThat(result).hasSize(1)
+        assertThat(result[0].movie)
             .extracting("movieId", "releaseDate")
-            .containsExactly(tuple(1L, LocalDate.now().minusDays(1)))
+            .containsExactly(1L, LocalDate.now().minusDays(1))
         assertThat(result[0].theaters).hasSize(1)
             .extracting("theaterId", "name")
             .containsExactly(tuple(1L, "A관"))
