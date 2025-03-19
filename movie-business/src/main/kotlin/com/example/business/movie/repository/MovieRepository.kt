@@ -5,6 +5,6 @@ import java.time.LocalDate
 
 interface MovieRepository {
 
-    fun findMoviesReleasedUntil(now: LocalDate): List<Movie>
+    fun getMoviesReleasedUntil(now: LocalDate): List<Movie>
 
 }

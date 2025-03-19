@@ -4,6 +4,6 @@ import com.example.business.theater.domain.TheaterSchedule
 
 interface TheaterScheduleRepository {
 
-    fun getScheduleByMovieIds(movieIds: List<Long>): List<TheaterSchedule>
+    fun getScheduleBy(movieIds: List<Long>): List<TheaterSchedule>
 
 }

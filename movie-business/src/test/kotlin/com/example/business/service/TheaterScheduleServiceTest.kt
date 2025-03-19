@@ -53,7 +53,7 @@ class TheaterScheduleServiceTest {
             endTime = LocalTime.of(14, 0)
         )
 
-        `when`(scheduleRepository.getScheduleByMovieIds(listOf(movie.movieId)))
+        `when`(scheduleRepository.getScheduleBy(listOf(movie.movieId)))
             .thenReturn(listOf(schedule))
 
         // when

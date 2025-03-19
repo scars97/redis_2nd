@@ -40,7 +40,7 @@ class MovieServiceTest {
             rating = "전체 이용가"
         )
 
-        `when`(movieRepository.findMoviesReleasedUntil(now))
+        `when`(movieRepository.getMoviesReleasedUntil(now))
             .thenReturn(listOf(movie))
 
         // when

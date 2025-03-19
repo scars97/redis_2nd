@@ -1,6 +1,5 @@
 package com.example.application.usecase
 
-import com.example.application.movie.MovieUseCase
 import com.example.business.movie.domain.Movie
 import com.example.business.movie.service.MovieService
 import com.example.business.theater.domain.Theater
