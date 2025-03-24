@@ -9,8 +9,8 @@ class TheaterScheduleMapper {
         fun toSchedule(entity: TheaterScheduleEntity): TheaterSchedule {
             return TheaterSchedule(
                 scheduleId = entity.id,
-                movieId = entity.movie.id,
-                theaterId = entity.theater.id,
+                movieId = entity.movieId,
+                theaterId = entity.theaterId,
                 screeningDate = entity.screeningDate,
                 startTime = entity.startTime,
                 endTime = entity.endTime

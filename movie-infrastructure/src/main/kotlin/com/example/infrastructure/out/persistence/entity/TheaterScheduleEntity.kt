@@ -17,11 +17,7 @@ class TheaterScheduleEntity (
 
     val endTime: LocalTime,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_id", nullable = false, foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    val movie: MovieEntity,
+    val movieId: Long,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "theater_id", nullable = false, foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    val theater: TheaterEntity
+    val theaterId: Long,
 ): BaseEntity()
