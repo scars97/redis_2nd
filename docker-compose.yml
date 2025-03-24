@@ -12,6 +12,7 @@ services:
       - MYSQL_DATABASE=movie-local
     volumes:
       - ./data/mysql/:/var/lib/mysql
+      - ./db/:/docker-entrypoint-initdb.d
 
   redis:
     image: redis:latest
