@@ -7,6 +7,7 @@ import com.example.business.theater.domain.Theater
 import com.example.business.theater.domain.TheaterSchedule
 import com.example.business.theater.service.TheaterScheduleService
 import com.example.business.theater.service.TheaterService
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
 
 @Component
@@ -16,6 +17,7 @@ class MovieUseCase(
     private val scheduleService: TheaterScheduleService
 ){
 
+    @Cacheable(cacheNames = ["available-movies"], value = ["available-movies"])
     fun getAvailableMovies(title: String?, genre: String?): List<AvailableMovieResult> {
         // 상영 가능한 영화 목록 조회
         val availableMovies: List<Movie> = movieService.getAvailableMovies(title, genre)
