@@ -16,9 +16,9 @@ class MovieUseCase(
     private val scheduleService: TheaterScheduleService
 ){
 
-    fun getAvailableMovies(): List<AvailableMovieResult> {
+    fun getAvailableMovies(title: String?, genre: String?): List<AvailableMovieResult> {
         // 상영 가능한 영화 목록 조회
-        val availableMovies: List<Movie> = movieService.getAvailableMovies()
+        val availableMovies: List<Movie> = movieService.getAvailableMovies(title, genre)
 
         // 영화 상영 일정 조회
         val scheduleMap: Map<Long, List<TheaterSchedule>> = scheduleService.getSchedules(availableMovies)

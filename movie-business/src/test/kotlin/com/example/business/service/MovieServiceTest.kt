@@ -29,6 +29,8 @@ class MovieServiceTest {
     @Test
     fun getAvailableMovies() {
         // given
+        val title: String? = null
+        val genre: String? = null
         val now = LocalDate.now()
         val movie = Movie(
             movieId = 1L,
@@ -40,11 +42,11 @@ class MovieServiceTest {
             rating = "전체 이용가"
         )
 
-        `when`(movieRepository.getMoviesReleasedUntil(now))
+        `when`(movieRepository.getMoviesReleasedUntil(title, genre))
             .thenReturn(listOf(movie))
 
         // when
-        val result = sut.getAvailableMovies()
+        val result = sut.getAvailableMovies(title, genre)
 
         // then
         assertThat(result).hasSize(1)

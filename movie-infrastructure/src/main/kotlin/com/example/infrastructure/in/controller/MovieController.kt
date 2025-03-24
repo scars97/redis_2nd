@@ -2,10 +2,11 @@ package com.example.infrastructure.`in`.controller
 
 import com.example.application.usecase.MovieUseCase
 import com.example.infrastructure.`in`.dto.AvailableMovieResponse
+import com.example.infrastructure.`in`.dto.MovieSearchRequest
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.*
+
 
 @RestController
 @RequestMapping("/api/movies")
@@ -14,9 +15,12 @@ class MovieController(
 ) {
 
     @GetMapping("")
-    fun getMovies() : ResponseEntity<List<AvailableMovieResponse>> {
-        val movies = movieUseCase.getAvailableMovies()
+    fun getMovies(
+        @Valid @ModelAttribute request: MovieSearchRequest
+    ): ResponseEntity<List<AvailableMovieResponse>> {
+        val movies = movieUseCase.getAvailableMovies(request.title, request.genre)
 
         return ResponseEntity.ok(movies.map { AvailableMovieResponse.of(it) }.toList())
     }
+
 }
