@@ -9,15 +9,15 @@ import org.springframework.context.annotation.Configuration
 import java.util.concurrent.TimeUnit
 
 @Configuration
-@EnableCaching
+//@EnableCaching
 class CaffeineCacheConfig {
 
-    @Bean
-    fun caffeineCacheManager(): CacheManager {
-        val cacheManager = CaffeineCacheManager("available-movies")
-        cacheManager.setCaffeine(caffeineCacheBuilder())
-        return cacheManager
-    }
+//    @Bean
+//    fun caffeineCacheManager(): CacheManager {
+//        val cacheManager = CaffeineCacheManager("available-movies")
+//        cacheManager.setCaffeine(caffeineCacheBuilder())
+//        return cacheManager
+//    }
 
     fun caffeineCacheBuilder(): Caffeine<Any, Any> {
         return Caffeine.newBuilder()
