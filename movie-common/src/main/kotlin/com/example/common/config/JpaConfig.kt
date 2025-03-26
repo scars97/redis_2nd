@@ -1,4 +1,4 @@
-package com.example.infrastructure.out.persistence.config
+package com.example.common.config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing

@@ -1,4 +1,4 @@
-package com.example.infrastructure.out.persistence.config
+package com.example.common.config
 
 import org.hibernate.boot.model.FunctionContributions
 import org.hibernate.dialect.MySQLDialect

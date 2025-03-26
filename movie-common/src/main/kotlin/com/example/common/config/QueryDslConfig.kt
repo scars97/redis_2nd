@@ -1,4 +1,4 @@
-package com.example.infrastructure.out.persistence.config
+package com.example.common.config
 
 import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
