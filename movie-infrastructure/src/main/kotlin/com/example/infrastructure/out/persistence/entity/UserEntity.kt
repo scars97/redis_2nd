@@ -11,7 +11,11 @@ class UserEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    val id: Long = 0,
+    var id: Long = 0,
 
     val name: String
-): BaseEntity()
+): BaseEntity() {
+
+    constructor(name: String): this(0, name)
+
+}

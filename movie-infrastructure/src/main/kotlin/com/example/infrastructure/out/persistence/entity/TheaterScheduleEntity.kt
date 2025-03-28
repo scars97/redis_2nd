@@ -9,7 +9,7 @@ class TheaterScheduleEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
-    val id: Long = 0,
+    var id: Long = 0,
 
     val screeningDate: LocalDate,
 
@@ -20,4 +20,9 @@ class TheaterScheduleEntity (
     val movieId: Long,
 
     val theaterId: Long,
-): BaseEntity()
+): BaseEntity() {
+
+    constructor(screeningDate: LocalDate, startTime: LocalTime ,endTime: LocalTime, movieId: Long ,theaterId: Long):
+            this(0, screeningDate, startTime, endTime, movieId, theaterId)
+
+}

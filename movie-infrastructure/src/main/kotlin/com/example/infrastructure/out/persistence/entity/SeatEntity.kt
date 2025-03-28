@@ -8,14 +8,19 @@ class SeatEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seat_id")
-    val id: Long = 0,
+    var id: Long = 0,
 
     val seatNumber: String,
 
     @Enumerated(EnumType.STRING)
-    val status: SeatStatus,
+    var status: SeatStatus,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id", nullable = false, foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    val schedule: TheaterScheduleEntity
-): BaseEntity()
+    var reservationId: Long?,
+
+    val scheduleId: Long
+): BaseEntity() {
+
+    constructor(seatNumber: String, status: SeatStatus, reservationId: Long?, scheduleId: Long) :
+            this(0, seatNumber, status, reservationId, scheduleId)
+
+}

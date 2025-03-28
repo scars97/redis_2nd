@@ -12,7 +12,7 @@ class MovieEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movie_id")
-    val id: Long = 0,
+    var id: Long = 0,
 
     val title: String,
 

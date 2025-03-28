@@ -13,14 +13,14 @@ import java.time.LocalDateTime
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseEntity (
     @CreatedBy
-    val createBy: String? = null,
+    var createBy: String? = null,
 
     @CreatedDate
-    val createAt: LocalDateTime = LocalDateTime.now(),
+    var createAt: LocalDateTime = LocalDateTime.now(),
 
     @LastModifiedBy
-    val modifiedBy: String? = null,
+    var modifiedBy: String? = null,
 
     @LastModifiedDate
-    val modifiedAt: LocalDateTime = LocalDateTime.now()
+    var modifiedAt: LocalDateTime = LocalDateTime.now()
 )

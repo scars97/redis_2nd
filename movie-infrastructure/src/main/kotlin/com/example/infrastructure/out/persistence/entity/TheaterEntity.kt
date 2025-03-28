@@ -11,7 +11,7 @@ class TheaterEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "theater_id")
-    val id: Long = 0,
+    var id: Long = 0,
 
     val name: String
 ): BaseEntity()
