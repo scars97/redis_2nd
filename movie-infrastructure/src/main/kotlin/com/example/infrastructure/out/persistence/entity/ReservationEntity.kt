@@ -1,6 +1,6 @@
 package com.example.infrastructure.out.persistence.entity
 
-import com.example.infrastructure.out.persistence.enums.ReservationStatus
+import com.example.business.reservation.domain.ReservationStatus
 import jakarta.persistence.*
 
 @Entity
