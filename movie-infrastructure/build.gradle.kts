@@ -12,4 +12,7 @@ dependencies {
     kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
 
     runtimeOnly("com.mysql:mysql-connector-j")
+
+    // TestContainer
+    testImplementation ("org.testcontainers:mysql")
 }
