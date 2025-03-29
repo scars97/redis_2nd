@@ -18,4 +18,8 @@ class TheaterScheduleCoreRepositoryImpl(
             .toList()
     }
 
+    override fun existsBy(scheduleId: Long): Boolean {
+        return jpaRepository.existsById(scheduleId)
+    }
+
 }

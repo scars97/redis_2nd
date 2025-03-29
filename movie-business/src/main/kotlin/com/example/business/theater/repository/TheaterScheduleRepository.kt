@@ -6,4 +6,6 @@ interface TheaterScheduleRepository {
 
     fun getScheduleBy(movieIds: List<Long>): List<TheaterSchedule>
 
+    fun existsBy(scheduleId: Long): Boolean
+
 }

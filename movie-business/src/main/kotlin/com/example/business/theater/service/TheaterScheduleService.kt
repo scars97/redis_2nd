@@ -16,4 +16,8 @@ class TheaterScheduleService (
         return scheduleRepository.getScheduleBy(movieIds)
     }
 
+    fun isScheduleExists(scheduleId: Long): Boolean {
+        return scheduleRepository.existsBy(scheduleId)
+    }
+
 }
