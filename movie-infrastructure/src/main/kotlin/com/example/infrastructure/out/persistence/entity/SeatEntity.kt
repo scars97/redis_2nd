@@ -1,6 +1,6 @@
 package com.example.infrastructure.out.persistence.entity
 
-import com.example.infrastructure.out.persistence.enums.SeatStatus
+import com.example.business.seat.domain.SeatStatus
 import jakarta.persistence.*
 
 @Entity
