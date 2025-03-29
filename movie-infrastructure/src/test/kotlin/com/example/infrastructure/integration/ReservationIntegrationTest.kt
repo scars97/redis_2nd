@@ -3,6 +3,8 @@ package com.example.infrastructure.integration
 import com.example.application.dto.ReservationInfo
 import com.example.application.usecase.ReservationUseCase
 import com.example.business.seat.domain.SeatStatus
+import com.example.common.exception.BusinessException
+import com.example.common.exception.ErrorCode
 import com.example.infrastructure.config.IntegrationTestSupport
 import com.example.infrastructure.out.persistence.entity.SeatEntity
 import com.example.infrastructure.out.persistence.entity.TheaterScheduleEntity
@@ -76,8 +78,8 @@ class ReservationIntegrationTest @Autowired constructor(
 
         // when
         assertThatThrownBy { sut.createReservation(info) }
-            .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessage("예약된 좌석입니다.")
+            .isInstanceOf(BusinessException::class.java)
+            .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ALREADY_RESERVED)
 
         val findAll = reservationJpaRepository.findAll()
         assertThat(findAll.size).isZero()

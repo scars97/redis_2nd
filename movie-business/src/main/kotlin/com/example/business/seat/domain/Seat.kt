@@ -1,6 +1,7 @@
 package com.example.business.seat.domain
 
-import java.lang.IllegalArgumentException
+import com.example.common.exception.BusinessException
+import com.example.common.exception.ErrorCode.*
 
 data class Seat(
     val seatId: Long,
@@ -12,7 +13,7 @@ data class Seat(
 
     fun checkAvailable() {
         if (this.status != SeatStatus.AVAILABLE || this.reservationId != null) {
-            throw IllegalArgumentException("예약된 좌석입니다.")
+            throw BusinessException(ALREADY_RESERVED, "예약된 좌석입니다 : ${this.seatId} - ${this.seatNumber}")
         }
     }
 

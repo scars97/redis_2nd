@@ -3,6 +3,8 @@ package com.example.application.validator
 import com.example.application.dto.ReservationInfo
 import com.example.business.theater.service.TheaterScheduleService
 import com.example.business.user.service.UserService
+import com.example.common.exception.BusinessException
+import com.example.common.exception.ErrorCode
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -12,7 +14,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
-import java.lang.IllegalArgumentException
 
 @ExtendWith(MockitoExtension::class)
 class ReservationValidatorTest {
@@ -41,7 +42,8 @@ class ReservationValidatorTest {
 
         // when // then
         assertThatThrownBy { sut.validate(info) }
-            .isInstanceOf(IllegalArgumentException::class.java)
+            .isInstanceOf(BusinessException::class.java)
+            .hasFieldOrPropertyWithValue("errorCode", ErrorCode.SCHEDULE_NOT_FOUND)
             .hasMessage("존재하지 않는 상영 일정 ID: ${info.scheduleId}")
     }
 

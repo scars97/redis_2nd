@@ -1,6 +1,9 @@
 package com.example.business.reservation.domain
 
 import com.example.business.seat.domain.Seat
+import com.example.common.exception.BusinessException
+import com.example.common.exception.ErrorCode
+import com.example.common.exception.ErrorCode.*
 import java.lang.IllegalArgumentException
 
 data class Reservation(
@@ -23,7 +26,7 @@ data class Reservation(
         fun checkExceedLimit(count: Int) {
             val seatLimit = 5
             if (seatLimit < count) {
-                throw IllegalArgumentException("최대 5개의 좌석을 예약할 수 있습니다.")
+                throw BusinessException(EXCEED_LIMIT, "최대 5개의 좌석을 예약할 수 있습니다.")
             }
         }
 
@@ -36,13 +39,13 @@ data class Reservation(
             groupedSeats.values.forEach { seatList ->
                 // 단일 좌석이면 실패
                 if (seatList.size == 1) {
-                    throw IllegalArgumentException("2개 이상의 좌석을 예약할 때는 같은 행이어야 합니다.")
+                    throw BusinessException(NOT_SAME_ROW, "2개 이상의 좌석을 예약할 때는 같은 행이어야 합니다.")
                 }
 
                 // 모든 좌석이 연속된 경우만 성공
                 val numbers = seatList.map { it.drop(1).toInt() }
                 if (!numbers.zipWithNext().all { (a, b) -> b - a == 1 }) {
-                    throw IllegalArgumentException("각 행의 좌석은 연속되어야 합니다.")
+                    throw BusinessException(NOT_CONTINUOUS_SEAT, "각 행의 좌석은 연속되어야 합니다.")
                 }
             }
         }

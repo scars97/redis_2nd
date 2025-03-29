@@ -3,6 +3,9 @@ package com.example.business.domain
 import com.example.business.reservation.domain.Reservation
 import com.example.business.seat.domain.Seat
 import com.example.business.seat.domain.SeatStatus
+import com.example.common.exception.BusinessException
+import com.example.common.exception.ErrorCode
+import com.example.common.exception.ErrorCode.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.DynamicTest
@@ -19,7 +22,8 @@ class ReservationTest {
 
         // when // then
         assertThatThrownBy { Reservation.checkExceedLimit(invalidCount) }
-            .isInstanceOf(IllegalArgumentException::class.java)
+            .isInstanceOf(BusinessException::class.java)
+            .hasFieldOrPropertyWithValue("errorCode", EXCEED_LIMIT)
             .hasMessage("최대 5개의 좌석을 예약할 수 있습니다.")
     }
 
@@ -41,12 +45,14 @@ class ReservationTest {
         return listOf(
             DynamicTest.dynamicTest("2개 이상 좌석 예약 시, 같은 행이 아니라면 예외가 발생한다.") {
                 assertThatThrownBy { Reservation.checkContinuousSeats(notSameRow) }
-                    .isInstanceOf(IllegalArgumentException::class.java)
+                    .isInstanceOf(BusinessException::class.java)
+                    .hasFieldOrPropertyWithValue("errorCode", NOT_SAME_ROW)
                     .hasMessage("2개 이상의 좌석을 예약할 때는 같은 행이어야 합니다.")
             },
             DynamicTest.dynamicTest("하나라도 연속된 좌석이 아니라면 예외가 발생한다.") {
                 assertThatThrownBy { Reservation.checkContinuousSeats(notContinuous) }
-                    .isInstanceOf(IllegalArgumentException::class.java)
+                    .isInstanceOf(BusinessException::class.java)
+                    .hasFieldOrPropertyWithValue("errorCode", NOT_CONTINUOUS_SEAT)
                     .hasMessage("각 행의 좌석은 연속되어야 합니다.")
             }
         )

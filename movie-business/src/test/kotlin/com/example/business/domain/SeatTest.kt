@@ -2,6 +2,9 @@ package com.example.business.domain
 
 import com.example.business.seat.domain.Seat
 import com.example.business.seat.domain.SeatStatus
+import com.example.common.exception.BusinessException
+import com.example.common.exception.ErrorCode
+import com.example.common.exception.ErrorCode.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.DynamicTest
@@ -21,13 +24,15 @@ class SeatTest {
         return listOf(
             DynamicTest.dynamicTest("좌석 상태가 RESERVED인 경우 예외가 발생한다.") {
                 assertThatThrownBy { statusIsReserved.checkAvailable() }
-                    .isInstanceOf(IllegalArgumentException::class.java)
-                    .hasMessage("예약된 좌석입니다.")
+                    .isInstanceOf(BusinessException::class.java)
+                    .hasFieldOrPropertyWithValue("errorCode", ALREADY_RESERVED)
+                    .hasMessage("예약된 좌석입니다 : ${statusIsReserved.seatId} - ${statusIsReserved.seatNumber}")
             },
             DynamicTest.dynamicTest("예약 ID 가 존재하는 경우 예외가 발생한다.") {
                 assertThatThrownBy { reservationIsNotNull.checkAvailable() }
-                    .isInstanceOf(IllegalArgumentException::class.java)
-                    .hasMessage("예약된 좌석입니다.")
+                    .isInstanceOf(BusinessException::class.java)
+                    .hasFieldOrPropertyWithValue("errorCode", ALREADY_RESERVED)
+                    .hasMessage("예약된 좌석입니다 : ${reservationIsNotNull.seatId} - ${reservationIsNotNull.seatNumber}")
             }
         )
     }

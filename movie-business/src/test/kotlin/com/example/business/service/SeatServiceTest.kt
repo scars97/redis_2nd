@@ -4,6 +4,8 @@ import com.example.business.seat.domain.Seat
 import com.example.business.seat.domain.SeatStatus
 import com.example.business.seat.repository.SeatRepository
 import com.example.business.seat.service.SeatService
+import com.example.common.exception.BusinessException
+import com.example.common.exception.ErrorCode
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -41,8 +43,9 @@ class SeatServiceTest {
 
         // when // then
         assertThatThrownBy { sut.updateForReserve(reservationId, seats) }
-            .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessage("예약된 좌석입니다.")
+            .isInstanceOf(BusinessException::class.java)
+            .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ALREADY_RESERVED)
+            .hasMessage("예약된 좌석입니다 : ${reservedSeat.seatId} - ${reservedSeat.seatNumber}")
     }
 
 }
