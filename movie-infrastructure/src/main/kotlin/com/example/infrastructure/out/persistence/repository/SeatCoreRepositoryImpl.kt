@@ -12,14 +12,14 @@ class SeatCoreRepositoryImpl(
 ): SeatRepository {
 
     override fun getSeats(seatIds: List<Long>): List<Seat> {
-        val seats = jpaRepository.findByIdIn(seatIds)
+        val seats = jpaRepository.findBySeatIdsWithLock(seatIds)
 
         return seats.map { SeatMapper.toSeat(it) }.toList()
     }
 
     @Transactional
     override fun updateForReserve(seatIds: List<Long>, reservationId: Long) {
-        val seatEntities = jpaRepository.findByIdIn(seatIds)
+        val seatEntities = jpaRepository.findAllById(seatIds)
 
         seatEntities.forEach { it.reserveBy(reservationId) }
     }

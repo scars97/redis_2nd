@@ -20,6 +20,9 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDate
 import java.time.LocalTime
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 
 class ReservationIntegrationTest @Autowired constructor(
     private val sut: ReservationUseCase,
@@ -80,4 +83,59 @@ class ReservationIntegrationTest @Autowired constructor(
         val findAll = reservationJpaRepository.findAll()
         assertThat(findAll.size).isZero()
     }
+
+    @DisplayName("10명이 동시에 같은 좌석을 예약하는 경우, 1명만 예약에 성공한다.")
+    @Test
+    fun when10UserTryToReserveTheSameSeat_thenOnly1Succeed() {
+        // given
+        val totalUsers = 10
+        for (i in 1 until totalUsers) {
+            val userName = "user" + (i + 1)
+            userJpaRepository.save(UserEntity(userName))
+        }
+        for (i in 1..5) {
+            seatJpaRepository.save(SeatEntity("A".plus(i), SeatStatus.AVAILABLE, null, schedule.id))
+        }
+
+        val executor = Executors.newFixedThreadPool(totalUsers)
+        val latch = CountDownLatch(totalUsers)
+
+        val successCount = AtomicInteger(0)
+        val failureCount = AtomicInteger(0)
+
+        // when
+        for (i in 0 until totalUsers) {
+            val userId = i + 1
+            executor.submit {
+                try {
+                    sut.createReservation(ReservationInfo(userId.toLong(), 1L, listOf(1L, 2L, 3L)))
+                    successCount.incrementAndGet()
+                } catch (e: Exception) {
+                    failureCount.incrementAndGet()
+                } finally {
+                    latch.countDown()
+                }
+            }
+        }
+
+        latch.await()
+        executor.shutdown()
+
+        // then
+        assertThat(successCount.get()).isOne()
+        assertThat(failureCount.get()).isEqualTo(9)
+
+        val reservations = reservationJpaRepository.findAll()
+        assertThat(reservations.size).isOne()
+
+        val seats = seatJpaRepository.findAllById(listOf(1L, 2L, 3L))
+        assertThat(seats).hasSize(3)
+            .extracting("status", "reservationId")
+            .containsExactly(
+                tuple(SeatStatus.RESERVED, reservations[0].id),
+                tuple(SeatStatus.RESERVED, reservations[0].id),
+                tuple(SeatStatus.RESERVED, reservations[0].id)
+            )
+    }
+
 }
