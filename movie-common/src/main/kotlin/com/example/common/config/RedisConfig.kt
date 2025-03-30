@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import org.redisson.Redisson
+import org.redisson.api.RedissonClient
+import org.redisson.config.Config
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.EnableCaching
@@ -22,7 +25,7 @@ import java.time.Duration
 
 @Configuration
 @EnableCaching
-class RedisCacheConfig(
+class RedisConfig(
     @Value("\${spring.data.redis.host}")
     val host: String,
     @Value("\${spring.data.redis.port}")
@@ -33,9 +36,16 @@ class RedisCacheConfig(
     fun redisConnectionFactory(): RedisConnectionFactory = LettuceConnectionFactory(host, port)
 
     @Bean
+    fun redissonClient(): RedissonClient {
+        val config = Config()
+        config.useSingleServer().setAddress("redis://$host:$port")
+        return Redisson.create(config)
+    }
+
+    @Bean
     fun cacheManager(redisConnectionFactory: RedisConnectionFactory): CacheManager {
         val cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
-            .entryTtl(Duration.ofDays(1)) // 캐시 1일 설정
+            .entryTtl(Duration.ofMinutes(10)) // 캐시 TTL 10분 설정
             .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(StringRedisSerializer()))
             .serializeValuesWith(
                 RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer())
@@ -57,7 +67,7 @@ class RedisCacheConfig(
                         .allowIfBaseType(Any::class.java).build(),
                     ObjectMapper.DefaultTyping.EVERYTHING)
                 configure(
-                    SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                    SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false) // ISO-8601 형식으로 날짜 직렬화
 
             }
         return GenericJackson2JsonRedisSerializer(objectMapper)

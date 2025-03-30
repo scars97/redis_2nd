@@ -15,4 +15,5 @@ dependencies {
 
     // TestContainer
     testImplementation ("org.testcontainers:mysql")
+    testImplementation ("com.redis:testcontainers-redis")
 }

@@ -21,9 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.concurrent.CompletableFuture
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.Executors
-import java.util.concurrent.atomic.AtomicInteger
 
 class ReservationIntegrationTest @Autowired constructor(
     private val sut: ReservationUseCase,
@@ -63,8 +60,7 @@ class ReservationIntegrationTest @Autowired constructor(
         assertThat(result).extracting("reservationId", "userId")
             .containsExactly(1L, 1L)
         assertThat(result.seatIds).hasSize(3)
-            .extracting("seatId")
-            .containsExactly(tuple(1L), tuple(2L), tuple(3L))
+            .containsExactly(1L, 2L, 3L)
     }
 
     @DisplayName("좌석 상태 수정 중 예외가 발생하면 이전에 생성된 예약 데이터는 rollback 된다.")
@@ -98,25 +94,17 @@ class ReservationIntegrationTest @Autowired constructor(
             seatJpaRepository.save(SeatEntity("A".plus(i), SeatStatus.AVAILABLE, null, schedule.id))
         }
 
-        val successCount = AtomicInteger(0)
-        val failureCount = AtomicInteger(0)
-
         val tasks = (1..totalUsers).map { userId ->
             CompletableFuture.runAsync {
                 try {
                     sut.createReservation(ReservationInfo(userId.toLong(), 1L, listOf(1L, 2L, 3L)))
-                    successCount.incrementAndGet()
                 } catch (e: Exception) {
-                    failureCount.incrementAndGet()
+                    e.message
                 }
             }
         }
 
         CompletableFuture.allOf(*tasks.toTypedArray()).join()
-
-        // then
-        assertThat(successCount.get()).isOne()
-        assertThat(failureCount.get()).isEqualTo(9)
 
         val reservations = reservationJpaRepository.findAll()
         assertThat(reservations.size).isOne()

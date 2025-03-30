@@ -21,12 +21,12 @@ class SeatEntity (
 
     val scheduleId: Long,
 
-    @Version
-    var version: Long
+    /*@Version
+    var version: Long*/
 ): BaseEntity() {
 
     constructor(seatNumber: String, status: SeatStatus, reservationId: Long?, scheduleId: Long) :
-            this(0, seatNumber, status, reservationId, scheduleId, 0)
+            this(0, seatNumber, status, reservationId, scheduleId/*, 0*/)
 
     fun reserveBy(reservationId: Long?) {
         if (this.status != SeatStatus.AVAILABLE || this.reservationId != null) {
