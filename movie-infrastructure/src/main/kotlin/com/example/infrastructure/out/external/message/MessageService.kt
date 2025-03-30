@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.transaction.event.TransactionPhase
 import org.springframework.transaction.event.TransactionalEventListener
-import java.io.IOException
 
 @Component
 class MessageService {
@@ -15,8 +14,9 @@ class MessageService {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     fun sendMessage(messageEvent: ReservationMessageEvent) {
         try {
-            log.info("App push 발송 : ${messageEvent.reservationId}")
-        } catch (e: IOException) {
+            Thread.sleep(500)
+            log.info("메시지 발송 : ${messageEvent.reservationId}")
+        } catch (e: Exception) {
             e.message
         }
     }
