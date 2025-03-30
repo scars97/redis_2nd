@@ -5,7 +5,7 @@ import com.example.application.dto.ReservationResult
 data class ReservationResponse(
     val reservationId: Long,
     val userId: Long,
-    val seats: List<SeatResponse> = listOf()
+    val seatIds: List<Long> = listOf()
 ) {
 
     companion object {
@@ -13,9 +13,9 @@ data class ReservationResponse(
             return ReservationResponse(
                 reservationId = result.reservationId,
                 userId = result.userId,
-                seats = result.seats.map { SeatResponse.of(it) }
+                seatIds = result.seatIds
             )
         }
     }
-    
+
 }

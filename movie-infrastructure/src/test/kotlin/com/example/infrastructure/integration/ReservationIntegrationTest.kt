@@ -58,13 +58,9 @@ class ReservationIntegrationTest @Autowired constructor(
         // then
         assertThat(result).extracting("reservationId", "userId")
             .containsExactly(1L, 1L)
-        assertThat(result.seats).hasSize(3)
-            .extracting("seatId", "seatNumber", "status", "reservationId", "scheduleId")
-            .containsExactly(
-                tuple(1L, "A1", "RESERVED", 1L, 1L),
-                tuple(2L, "A2", "RESERVED", 1L, 1L),
-                tuple(3L, "A3", "RESERVED", 1L, 1L)
-            )
+        assertThat(result.seatIds).hasSize(3)
+            .extracting("seatId")
+            .containsExactly(tuple(1L), tuple(2L), tuple(3L))
     }
 
     @DisplayName("좌석 상태 수정 중 예외가 발생하면 이전에 생성된 예약 데이터는 rollback 된다.")

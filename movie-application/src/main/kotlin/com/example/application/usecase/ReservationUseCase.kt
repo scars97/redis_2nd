@@ -31,12 +31,12 @@ class ReservationUseCase(
 
         val reservation = reservationService.createReservation(Reservation.of(info.userId))
 
-        val updateSeats = seatService.updateForReserve(reservation.reservationId, seats)
+        seatService.updateForReserve(info.seatIds, reservation.reservationId)
 
         // App push 이벤트 발행
         eventPublisher.publishEvent(ReservationMessageEvent.of(reservation.reservationId))
 
-        return ReservationResult.of(reservation, updateSeats)
+        return ReservationResult.of(reservation, info.seatIds)
     }
 
 }
