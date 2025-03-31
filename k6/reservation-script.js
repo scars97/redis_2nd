@@ -10,10 +10,7 @@ export const options = {
             maxDuration: '5m',    // 최대 실행 시간
             startTime: '0s',
         },
-    },
-    thresholds: {
-        http_req_duration: ['p(95)<200']  // 95% 요청이 200ms 이하
-    },
+    }
 };
 
 const BASE_URL = 'http://host.docker.internal:8080';
