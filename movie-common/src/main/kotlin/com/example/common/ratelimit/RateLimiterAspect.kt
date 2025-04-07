@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 @Aspect
 @Component
 class RateLimiterAspect(
-    @Qualifier("Bucket4jRateLimiter") private val rateLimiter: RateLimiter
+    @Qualifier("RedisRateLimiter") private val rateLimiter: RateLimiter
 ) {
 
     @Around("@annotation(com.example.common.ratelimit.LimitRequestPerTime)")
