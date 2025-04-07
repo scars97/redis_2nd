@@ -4,7 +4,6 @@ import com.example.business.seat.domain.Seat
 import com.example.business.seat.repository.SeatRepository
 import com.example.infrastructure.out.persistence.mapper.SeatMapper
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
 
 @Repository
 class SeatCoreRepositoryImpl(
@@ -17,11 +16,9 @@ class SeatCoreRepositoryImpl(
         return seats.map { SeatMapper.toSeat(it) }.toList()
     }
 
-    @Transactional
-    override fun updateForReserve(seatIds: List<Long>, reservationId: Long) {
-        val seatEntities = jpaRepository.findAllById(seatIds)
+    override fun updateForReserve(seats: List<Seat>, reservationId: Long) {
+        val updatedSeats = seats.map { SeatMapper.toEntity(it) }
 
-        seatEntities.forEach { it.reserveBy(reservationId) }
+        jpaRepository.saveAll(updatedSeats)
     }
-
 }

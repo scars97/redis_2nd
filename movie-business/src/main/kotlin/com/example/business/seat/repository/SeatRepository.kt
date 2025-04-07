@@ -6,6 +6,6 @@ interface SeatRepository {
 
     fun getSeats(seatIds: List<Long>): List<Seat>
 
-    fun updateForReserve(seatIds: List<Long>, reservationId: Long)
+    fun updateForReserve(seats: List<Seat>, reservationId: Long)
 
 }

@@ -18,6 +18,7 @@ class SeatMapper {
 
         fun toEntity(seat: Seat): SeatEntity {
             return SeatEntity(
+                id = seat.seatId,
                 seatNumber = seat.seatNumber,
                 status = seat.status,
                 reservationId = seat.reservationId,

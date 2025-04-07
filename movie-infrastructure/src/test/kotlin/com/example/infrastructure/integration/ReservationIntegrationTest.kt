@@ -94,6 +94,7 @@ class ReservationIntegrationTest @Autowired constructor(
             seatJpaRepository.save(SeatEntity("A".plus(i), SeatStatus.AVAILABLE, null, schedule.id))
         }
 
+        // when
         val tasks = (1..totalUsers).map { userId ->
             CompletableFuture.runAsync {
                 try {
@@ -106,6 +107,8 @@ class ReservationIntegrationTest @Autowired constructor(
 
         CompletableFuture.allOf(*tasks.toTypedArray()).join()
 
+
+        // then
         val reservations = reservationJpaRepository.findAll()
         assertThat(reservations.size).isOne()
 

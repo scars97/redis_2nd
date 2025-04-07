@@ -13,8 +13,10 @@ class SeatService(
         return seatRepository.getSeats(seatIds)
     }
 
-    fun updateForReserve(seatIds: List<Long>, reservationId: Long){
-        seatRepository.updateForReserve(seatIds, reservationId)
+    fun updateForReserve(seats: List<Seat>, reservationId: Long){
+        seats.forEach { it.reserveBy(reservationId) }
+
+        seatRepository.updateForReserve(seats, reservationId)
     }
 
 }
