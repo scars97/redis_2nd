@@ -7,6 +7,11 @@ plugins {
     id("org.springframework.boot") version "3.4.3" apply false
     kotlin("plugin.jpa") version "1.9.10" apply false
     id("io.spring.dependency-management") version "1.1.7" apply false
+    jacoco
+}
+
+jacoco {
+    toolVersion = "0.8.8"
 }
 
 java {
@@ -18,22 +23,6 @@ java {
 allprojects {
     group = "com.example"
     version = "0.0.1-SNAPSHOT"
-
-    tasks.withType<JavaCompile>{
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
-    }
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "17"
-        }
-    }
-
-    tasks.withType<Test> {
-        useJUnitPlatform()
-    }
 
     repositories {
         mavenCentral()
@@ -47,6 +36,7 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
     apply(plugin = "kotlin")
     apply(plugin = "kotlin-kapt")
+    apply(plugin = "jacoco")
 
     dependencies {
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -69,5 +59,42 @@ subprojects {
 
     tasks.withType<BootJar> {
         enabled = false
+    }
+
+    tasks.withType<JavaCompile>{
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "17"
+        }
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    tasks.jacocoTestReport {
+        dependsOn(tasks.test)
+        reports {
+            html.required.set(true)
+            xml.required.set(false)
+            csv.required.set(false)
+        }
+    }
+
+    tasks.jacocoTestCoverageVerification {
+        dependsOn(tasks.jacocoTestReport)
+        violationRules {
+            rule {
+                limit {
+                    counter = "BRANCH"
+                    minimum = "0.60".toBigDecimal()
+                }
+            }
+        }
     }
 }
