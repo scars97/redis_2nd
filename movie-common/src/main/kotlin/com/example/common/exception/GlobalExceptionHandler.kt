@@ -32,4 +32,13 @@ class GlobalExceptionHandler {
         return ErrorResponse.of(e.errorCode, e.message)
     }
 
+    @ExceptionHandler(RateLimitException::class)
+    fun rateLimitExceptionHandler(e: RateLimitException): ResponseEntity<ErrorResponse> {
+        val status = HttpStatus.TOO_MANY_REQUESTS
+        log.error("${e.methodName} - $status")
+
+        return ErrorResponse.of(status, e.message)
+    }
+
+
 }

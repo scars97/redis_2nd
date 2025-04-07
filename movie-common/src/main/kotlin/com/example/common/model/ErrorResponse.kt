@@ -15,6 +15,12 @@ data class ErrorResponse(
                 .status(errorCode.status)
                 .body(ErrorResponse(errorCode.status, message))
         }
+
+        fun of(status: HttpStatus, message: String?): ResponseEntity<ErrorResponse> {
+            return ResponseEntity
+                .status(status)
+                .body(ErrorResponse(status, message))
+        }
     }
 
 }
